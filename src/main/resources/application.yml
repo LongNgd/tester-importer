@@ -1,0 +1,19 @@
+server:
+  port: 8081
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: tester-importer
+  datasource:
+    url: jdbc:postgresql://localhost:5432/cim
+    username: postgres
+    password: long2112
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        default_schema: at_project_schema

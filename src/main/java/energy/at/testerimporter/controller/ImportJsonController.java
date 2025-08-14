@@ -18,10 +18,20 @@ public class ImportJsonController {
     private final JsonOrganisationLoader jsonOrganisationLoader;
     private final JsonSubstationLoader jsonSubstationLoader;
 
-    @PostMapping("/organisaion")
+    @PostMapping("/organisation")
     public ResponseEntity<?> importOrganisationJson(@RequestParam("file") MultipartFile file) {
         try {
             jsonOrganisationLoader.importFromJson(file);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/substation")
+    public ResponseEntity<?> importSubstationJson(@RequestParam("file") MultipartFile file) {
+        try {
+            jsonSubstationLoader.importFromJson(file);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

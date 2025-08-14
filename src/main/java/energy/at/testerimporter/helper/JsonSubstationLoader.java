@@ -36,7 +36,7 @@ public class JsonSubstationLoader {
             Assert.notNull(!node.hasNonNull("Parent_company"), "Missing required field 'Parent_company': " + node);
 
             Optional<Organisation> parent = organisationRepository.findByName(node.get("Parent_company").asText());
-            Assert.isTrue(parent.isPresent(), "Parent company not found in organisation data: " );
+            Assert.isTrue(parent.isPresent(), "Parent company not found in organisation data: " + node.get("Parent_company"));
 
             // TownDetail
             String district = node.get("Quận/Huyện").asText(null);

@@ -6,10 +6,14 @@ server:
 spring:
   application:
     name: tester-importer
+#  datasource:
+#    url: jdbc:postgresql://localhost:5432/cim
+#    username: postgres
+#    password: long2112
   datasource:
-    url: jdbc:postgresql://localhost:5432/cim
+    url: jdbc:postgresql://192.168.127.250:5432/cim
     username: postgres
-    password: long2112
+    password: atenergy
   jpa:
     show-sql: true
     hibernate:

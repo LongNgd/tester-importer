@@ -7,6 +7,6 @@ import lombok.Data;
 @Entity
 @Data
 @Table(name = "manufacturer")
-public class Manufacturer extends IdentifiedObject {
+public class Manufacturer extends OrganisationRole {
 
 }

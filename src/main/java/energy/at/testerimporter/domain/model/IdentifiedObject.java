@@ -13,6 +13,7 @@ public class IdentifiedObject {
     @Id
     private UUID mrid;
     private String name;
+
     @Column(name = "alias_name")
     private String aliasName;
     private String description;

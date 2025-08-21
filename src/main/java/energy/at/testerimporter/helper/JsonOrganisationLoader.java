@@ -41,7 +41,7 @@ public class JsonOrganisationLoader {
             String country = node.get("Country").asText(null);
 
             TownDetail townDetail;
-            if (city != null || ward != null || country != null) {
+            if (city != null || ward != null || country != null) { // check if town detail exists
                 townDetail = townDetailRepository
                         .findByCityAndWardCommuneAndCountry(city, ward, country)
                         .orElseGet(() -> {
@@ -60,7 +60,7 @@ public class JsonOrganisationLoader {
             String street = node.get("Địa chỉ").asText(null);
 
             StreetAddress streetAddress;
-            if (street != null || townDetail != null) {
+            if (street != null || townDetail != null) { // check if street address exists
                 streetAddress = streetAddressRepository
                         .findByStreetDetailAndTownDetail(street, townDetail)
                         .orElseGet(() -> {
@@ -79,7 +79,7 @@ public class JsonOrganisationLoader {
             String web = node.get("Website Link").asText(null);
 
             ElectronicAddress electronicAddress;
-            if (email != null || web != null) {
+            if (email != null || web != null) { // check if electronic address exists
                 electronicAddress = electronicAddressRepository
                         .findByEmailAndWeb(email, web)
                         .orElseGet(() -> {
@@ -97,7 +97,7 @@ public class JsonOrganisationLoader {
             String phone = node.get("Điện thoại").asText(null);
 
             TelephoneNumber telephoneNumber;
-            if (phone != null) {
+            if (phone != null) { // check if telephone number exists
                 telephoneNumber = telephoneNumberRepository
                         .findByLocalNumber(phone)
                         .orElseGet(() -> {
@@ -111,7 +111,7 @@ public class JsonOrganisationLoader {
             }
 
             // Organisation
-            organisationRepository.findByName(node.get("Tên").asText())
+            organisationRepository.findByName(node.get("Tên").asText()) // check if organisation exists
                     .orElseGet(() -> {
                         Organisation org = new Organisation();
                         org.setMrid(UUID.randomUUID());
@@ -130,10 +130,11 @@ public class JsonOrganisationLoader {
             String parentName = node.get("ParentCompany").asText(null);
             if (parentName == null) continue;
 
+            // find parent organisation
             Organisation parentOrg = organisationRepository.findByName(parentName)
                     .orElseThrow(() -> new NoSuchElementException("Parent organisation not found with name " + parentName));
 
-            // Check if parent organisation exist in parent_organisation table
+            // Check if parent organisation exist in parent_organisation table, if not -> add to table
             ParentOrganisation po = parentOrganisationRepository.findByMrid(parentOrg.getMrid())
                     .orElseGet(() -> {
                         ParentOrganisation parent = new ParentOrganisation();
@@ -141,11 +142,12 @@ public class JsonOrganisationLoader {
                         return parentOrganisationRepository.save(parent);
                     });
 
+            // get organisation and add parent organisation to it
             String orgName = node.get("Tên").asText();
             Organisation org = organisationRepository.findByName(orgName)
                     .orElseThrow(() -> new NoSuchElementException("Organisation not found with name " + orgName));
-
             org.setParentOrganisation(po);
+
             organisationRepository.save(org);
         }
 

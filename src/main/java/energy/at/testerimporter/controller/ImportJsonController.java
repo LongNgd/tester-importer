@@ -1,5 +1,6 @@
 package energy.at.testerimporter.controller;
 
+import energy.at.testerimporter.helper.JsonTransformerLoader;
 import energy.at.testerimporter.helper.JsonOrganisationLoader;
 import energy.at.testerimporter.helper.JsonSubstationLoader;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ImportJsonController {
     private final JsonOrganisationLoader jsonOrganisationLoader;
     private final JsonSubstationLoader jsonSubstationLoader;
+    private final JsonTransformerLoader jsonTransformerLoader;
 
     @PostMapping("/organisation")
     public ResponseEntity<?> importOrganisationJson(@RequestParam("file") MultipartFile file) {
@@ -32,6 +34,16 @@ public class ImportJsonController {
     public ResponseEntity<?> importSubstationJson(@RequestParam("file") MultipartFile file) {
         try {
             jsonSubstationLoader.importFromJson(file);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/transformer")
+    public ResponseEntity<?> importTransformerJson(@RequestParam("file") MultipartFile file) {
+        try {
+            jsonTransformerLoader.importFromJson(file);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

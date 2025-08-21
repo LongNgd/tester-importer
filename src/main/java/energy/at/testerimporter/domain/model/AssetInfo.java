@@ -6,6 +6,7 @@ import lombok.Data;
 @Entity
 @Data
 @Table(name = "asset_info")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class AssetInfo extends IdentifiedObject {
     @ManyToOne
     @JoinColumn(name = "product_asset_model")

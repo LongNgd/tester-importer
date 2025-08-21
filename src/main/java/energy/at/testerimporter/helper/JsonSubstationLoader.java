@@ -44,7 +44,7 @@ public class JsonSubstationLoader {
             String city = node.get("Tỉnh/Thành phố").asText(null);
 
             TownDetail townDetail;
-            if (district != null || ward != null || city != null) {
+            if (district != null || ward != null || city != null) { // check if town detail exists
                 townDetail = townDetailRepository
                         .findByCityAndDistrictTownAndWardCommune(city, district, ward)
                         .orElseGet(() -> {
@@ -63,7 +63,7 @@ public class JsonSubstationLoader {
             String street = node.get("Đường").asText();
 
             StreetAddress streetAddress;
-            if (street != null || townDetail != null) {
+            if (street != null || townDetail != null) { // check if street address exists
                 streetAddress = streetAddressRepository
                         .findByStreetDetailAndTownDetail(street, townDetail)
                         .orElseGet(() -> {
@@ -81,7 +81,7 @@ public class JsonSubstationLoader {
             String email = node.get("Email").asText(null);
 
             ElectronicAddress electronicAddress;
-            if (email != null) {
+            if (email != null) { // check if electronic address exists
                 electronicAddress = electronicAddressRepository
                         .findByEmail(email)
                         .orElseGet(() -> {
@@ -99,7 +99,7 @@ public class JsonSubstationLoader {
             String geoRef = node.get("Kinh độ, vĩ độ").asText(null);
 
             Location location;
-            if (geoRef != null || streetAddress != null || electronicAddress != null) {
+            if (geoRef != null || streetAddress != null || electronicAddress != null) { // check if location exists
                 location = locationRepository
                         .findByGeoInfoReferenceAndMainAddressAndElectronicAddress(geoRef, streetAddress, electronicAddress)
                         .orElseGet(() -> {
@@ -115,7 +115,7 @@ public class JsonSubstationLoader {
             }
 
             // Substation
-            substationRepository.findByName(node.get("Tên đơn vị").asText())
+            substationRepository.findByName(node.get("Tên đơn vị").asText()) // check if substation exists
                     .orElseGet(() -> {
                         Substation substation = new Substation();
                         substation.setMrid(UUID.randomUUID());
